@@ -11,7 +11,7 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 
 // Default configuration for the app carousel section
 const defaultConfig = {
-  section_title: "Featured Apps",
+  section_title: "Out Apps",
   app_1_title: "Habitory",
   app_1_tagline: "Where good habits are built.",
   app_1_description:
@@ -47,6 +47,7 @@ const nextBtn = document.getElementById("nextBtn");
  * Display a specific card and update navigation dots
  * @param {number} index - The index of the card to show (0-2)
  */
+
 function showCard(index) {
   // Remove active class from all cards and add it to the selected one
   cards.forEach((card, i) => {
@@ -187,92 +188,4 @@ async function onConfigChange(config) {
     activeDot.style.background =
       config.button_color || defaultConfig.button_color;
   }
-}
-
-// Initialize Element SDK if available (for custom editing capabilities)
-if (window.elementSdk) {
-  window.elementSdk.init({
-    defaultConfig,
-    onConfigChange,
-    // Map configuration to recolorable elements
-    mapToCapabilities: (config) => ({
-      recolorables: [
-        {
-          get: () => config.background_color || defaultConfig.background_color,
-          set: (value) => {
-            config.background_color = value;
-            window.elementSdk.setConfig({ background_color: value });
-          },
-        },
-        {
-          get: () => config.card_background || defaultConfig.card_background,
-          set: (value) => {
-            config.card_background = value;
-            window.elementSdk.setConfig({ card_background: value });
-          },
-        },
-        {
-          get: () => config.text_color || defaultConfig.text_color,
-          set: (value) => {
-            config.text_color = value;
-            window.elementSdk.setConfig({ text_color: value });
-          },
-        },
-        {
-          get: () => config.accent_color || defaultConfig.accent_color,
-          set: (value) => {
-            config.accent_color = value;
-            window.elementSdk.setConfig({ accent_color: value });
-          },
-        },
-        {
-          get: () => config.button_color || defaultConfig.button_color,
-          set: (value) => {
-            config.button_color = value;
-            window.elementSdk.setConfig({ button_color: value });
-          },
-        },
-      ],
-      borderables: [],
-      // Font family editing capability
-      fontEditable: {
-        get: () => config.font_family || defaultConfig.font_family,
-        set: (value) => {
-          config.font_family = value;
-          window.elementSdk.setConfig({ font_family: value });
-        },
-      },
-      // Font size editing capability
-      fontSizeable: {
-        get: () => config.font_size || defaultConfig.font_size,
-        set: (value) => {
-          config.font_size = value;
-          window.elementSdk.setConfig({ font_size: value });
-        },
-      },
-    }),
-    // Map configuration to edit panel values
-    mapToEditPanelValues: (config) =>
-      new Map([
-        ["section_title", config.section_title || defaultConfig.section_title],
-        ["app_1_title", config.app_1_title || defaultConfig.app_1_title],
-        ["app_1_tagline", config.app_1_tagline || defaultConfig.app_1_tagline],
-        [
-          "app_1_description",
-          config.app_1_description || defaultConfig.app_1_description,
-        ],
-        ["app_2_title", config.app_2_title || defaultConfig.app_2_title],
-        ["app_2_tagline", config.app_2_tagline || defaultConfig.app_2_tagline],
-        [
-          "app_2_description",
-          config.app_2_description || defaultConfig.app_2_description,
-        ],
-        ["app_3_title", config.app_3_title || defaultConfig.app_3_title],
-        ["app_3_tagline", config.app_3_tagline || defaultConfig.app_3_tagline],
-        [
-          "app_3_description",
-          config.app_3_description || defaultConfig.app_3_description,
-        ],
-      ]),
-  });
 }

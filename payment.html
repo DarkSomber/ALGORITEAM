@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algoriteam: Check out!</title>
+    <link rel="icon" href="/images/Circle_Logo.png" type="image/icon" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="Logo-Holder">
+            <a href="/index.html" class="logo">
+                <img src="/images/Circle_Logo.png" alt="Algoriteam Logo" width="60" height="60" />
+                Algoriteam
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/index.html#apps">Apps</a></li>
+            <li><a href="/index.html#price-list">Price-Lists</a></li>
+            <li><a href="/about.html#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="payment-container">
+        <div class="payment-grid">
+            <!-- Payment Form -->
+            <div class="payment-form-section">
+                <h1>Checkout</h1>
+                <p class="subtitle">Complete your purchase securely</p>
+
+                <form id="paymentForm">
+                    <!-- Contact Information -->
+                    <div class="form-section">
+                        <h2><span class="icon">📧</span> Contact Information</h2>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="form-section">
+                        <h2><span class="icon">💳</span> Payment Method</h2>
+                        <div class="payment-methods">
+                            <div class="payment-method active" data-method="card">
+                                <div class="icon">💳</div>
+                                <div>Card</div>
+                            </div>
+                            <div class="payment-method" data-method="paypal">
+                                <div class="icon">🅿️</div>
+                                <div>PayPal</div>
+                            </div>
+                            <div class="payment-method" data-method="gpay">
+                                <div class="icon">🅖</div>
+                                <div>Google Pay</div>
+                            </div>
+                        </div>
+
+                        <div id="cardForm">
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                            </div>
+                            <div class="form-group">
+                                <label for="cardName">Cardholder Name</label>
+                                <input type="text" id="cardName" placeholder="John Doe">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiry">Expiry Date</label>
+                                    <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Billing Address -->
+                    <div class="form-section">
+                        <h2><span class="icon">📍</span> Billing Address</h2>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="US">United States</option>
+                                <option value="PH">Philippines</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                                <option value="AU">Australia</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Street Address</label>
+                            <input type="text" id="address" placeholder="123 Main Street">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" placeholder="City">
+                            </div>
+                            <div class="form-group">
+                                <label for="zip">ZIP Code</label>
+                                <input type="text" id="zip" placeholder="12345">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="/terms.html">Terms of Service</a> and <a
+                                href="/privacy.html">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Complete Purchase</button>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+
+                <div class="product-item" id="productItem">
+                    <div class="product-icon" id="productIcon">🌱</div>
+                    <div class="product-details">
+                        <div class="product-name" id="productName">DailyRoot</div>
+                        <div class="product-type">Habit Tracking App</div>
+                    </div>
+                    <div class="product-price" id="productPrice">$2.00</div>
+                </div>
+
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$2.00</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Tax</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span id="total">$2.00</span>
+                    </div>
+                </div>
+
+                <div class="security-badge">
+                    <span class="icon">🔒</span>
+                    <span>Secure payment protected by 256-bit encryption</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+       // App data configuration
+        const apps = {
+            'habitory': {
+                name: 'Habitory',
+                icon: '✔',
+                price: 0.00,
+                priceText: 'Free'
+            },
+            'timeforge': {
+                name: 'TimeForge',
+                icon: '⚡',
+                price: 0.99,
+                priceText: '$0.99'
+            },
+            'riseloop': {
+                name: 'RiseLoop',
+                icon: '↑',
+                price: 0.99,
+                priceText: '$0.99'
+            },
+            'dailyroot': {
+                name: 'DailyRoot',
+                icon: '🌱',
+                price: 2.00,
+                priceText: '$2.00'
+            }
+        };
+
+        // Get app from URL parameter
+        function getAppFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const appParam = urlParams.get('app');
+            return appParam ? appParam.toLowerCase() : 'dailyroot';
+        }
+
+        // Update page with app details
+        function updatePaymentPage() {
+            const appId = getAppFromURL();
+            const app = apps[appId] || apps['dailyroot'];
+
+            // Update product details
+            document.getElementById('productIcon').textContent = app.icon;
+            document.getElementById('productName').textContent = app.name;
+            document.getElementById('productPrice').textContent = app.priceText;
+
+            // Update price breakdown
+            document.getElementById('subtotal').textContent = app.priceText;
+            document.getElementById('total').textContent = app.priceText;
+
+            // Update page title
+            document.title = `Checkout - ${app.name} | Algoriteam`;
+
+            // If app is free, hide payment form and show different message
+            if (app.price === 0) {
+                handleFreeApp(app);
+            }
+        }
+
+        // Handle free app download
+        function handleFreeApp(app) {
+            const paymentFormSection = document.querySelector('.payment-form-section');
+            paymentFormSection.innerHTML = `
+                <h1>Download ${app.name}</h1>
+                <p class="subtitle">This app is completely free!</p>
+                
+                <div style="text-align: center; padding: 40px 0;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">${app.icon}</div>
+                    <h2 style="color: #1a202c; margin-bottom: 15px;">${app.name}</h2>
+                    <p style="color: #718096; margin-bottom: 30px;">No payment required. Start using it right away!</p>
+                    
+                    <button type="button" class="submit-button" onclick="window.location.href='/download.html?app=${app.name.toLowerCase()}'">
+                        Download Now
+                    </button>
+                    
+                    <p style="margin-top: 20px; color: #718096; font-size: 0.9rem;">
+                        Available for iOS, Android, and Desktop
+                    </p>
+                </div>
+            `;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', updatePaymentPage);
+
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const cardForm = document.getElementById('cardForm');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', () => {
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                method.classList.add('active');
+
+                const selectedMethod = method.dataset.method;
+                if (selectedMethod === 'card') {
+                    cardForm.style.display = 'block';
+                } else {
+                    cardForm.style.display = 'none';
+                }
+            });
+        });
+
+
+        // Form submission
+        const paymentForm = document.getElementById("paymentForm");
+        paymentForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            alert(
+                "Payment processing... This is a demo. Integrate with your payment provider."
+            );
+
+        });
+    </script>
+</body>
+
+</html>
