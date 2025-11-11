@@ -24,6 +24,10 @@ const defaultConfig = {
   app_3_tagline: "Rise. Repeat. Improve.",
   app_3_description:
     "RiseLoop keeps you in rhythm with your goals through daily reminders, progress circles, and motivation boosts. Whether it's reading, exercising, or meditating — build habits that stick and rise higher every day.",
+  app_4_title: "DailyRoot",
+  app_4_tagline: "Master Your Digital Habits",
+  app_4_description:
+    "DailyRoot automatically tracks your screen time and application usage, transforming your digital behavior into actionable insights. Set focus timers, visualize your habits, and take control of your productivity.",
   background_color: "#667eea",
   card_background: "#ffffff",
   text_color: "#1a202c",
@@ -158,6 +162,7 @@ async function onConfigChange(config) {
   const descConfigs = [
     config.app_1_description || defaultConfig.app_1_description,
     config.app_2_description || defaultConfig.app_2_description,
+    config.app_3_description || defaultConfig.app_3_description,
     config.app_3_description || defaultConfig.app_3_description,
   ];
   appDescriptions.forEach((desc, i) => {
