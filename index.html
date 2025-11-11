@@ -23,6 +23,16 @@
             <li><a href="/about.html#about">About</a></li>
             <li><a href="/about.html#contact-us">Contact</a></li>
         </ul>
+        <div class="auth-section">
+            <div id="userGreeting" style="display: none;">
+                <span>Welcome, <span id="usernameDisplay"></span>!</span>
+                <button onclick="logout()"
+                    style="margin-left: 10px; padding: 8px 16px; background: #ff4757; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+            </div>
+            <a href="/login.html" class="login-link" id="loginLink">
+                <button>Login / Register</button>
+            </a>
+        </div>
     </nav>
     <!-- Landing Section -->
     <header class="hero-section">
@@ -85,7 +95,7 @@
                         usage, transforming your digital behavior into actionable insights. Set focus timers, visualize
                         your
                         habits, and take control of your productivity.</p>
-                    <div class="cta-buttons"><a href="/payment.html?app=dailyroot" class="btn btn-primary"
+                    <div class="cta-buttons"><a href="/payment.html?app=dailyroot" class=" btn-primary"
                             id="primary-button">Start Tracking
                             For $2 Only!</a>
                         <a href="#" class="btn btn-secondary" id="secondary-button">Watch Demo</a>
@@ -295,6 +305,7 @@
             </div>
         </div>
     </section>
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -336,7 +347,6 @@
                 </ul>
             </div>
         </div>
-
         <div class="footer-bottom">
             <p>&copy; 2024 Algoriteam. All rights reserved.</p>
         </div>

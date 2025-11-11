@@ -23,6 +23,16 @@
             <li><a href="/about.html#about">About</a></li>
             <li><a href="/about.html#contact-us">Contact</a></li>
         </ul>
+        <div class="auth-section">
+            <div id="userGreeting" style="display: none;">
+                <span>Welcome, <span id="usernameDisplay"></span>!</span>
+                <button onclick="logout()"
+                    style="margin-left: 10px; padding: 8px 16px; background: #ff4757; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+            </div>
+            <a href="/login.html" class="login-link" id="loginLink">
+                <button>Login / Register</button>
+            </a>
+        </div>
     </nav>
     <div class="payment-container">
         <div class="payment-grid">
@@ -205,12 +215,13 @@
             <p>&copy; 2024 Algoriteam. All rights reserved.</p>
         </div>
     </footer>
+    <script src="index.js"></script>
     <script>
         // App data configuration
         const apps = {
             'habitory': {
                 name: 'Habitory',
-                icon: '✔',
+                icon: '✓',
                 price: 0.00,
                 priceText: 'Free'
             },
@@ -247,7 +258,22 @@
             const app = apps[appId] || apps['dailyroot'];
 
             // Update product details
-            document.getElementById('productIcon').textContent = app.icon;
+            const productIcon = document.getElementById('productIcon');
+            productIcon.textContent = app.icon;
+            productIcon.style.cssText = `
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, #4a90e2 0%, #2ecc71 100%);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: white;
+                box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
+            `;
+
             document.getElementById('productName').textContent = app.name;
             document.getElementById('productPrice').textContent = app.priceText;
 
@@ -263,61 +289,61 @@
                 handleFreeApp(app);
             }
         }
-
         // Handle free app download
         function handleFreeApp(app) {
             const paymentFormSection = document.querySelector('.payment-form-section');
             paymentFormSection.innerHTML = `
-                <h1>Download ${app.name}</h1>
-                <p class="subtitle">This app is completely free!</p>
-                
-                <div style="text-align: center; padding: 40px 0;">
-                    <div style="font-size: 4rem; margin-bottom: 20px;">${app.icon}</div>
-                    <h2 style="color: #1a202c; margin-bottom: 15px;">${app.name}</h2>
-                    <p style="color: #718096; margin-bottom: 30px;">No payment required. Start using it right away!</p>
-                    
-                    <button type="button" class="submit-button" onclick="window.location.href='/download.html?app=${app.name.toLowerCase()}'">
-                        Download Now
-                    </button>
-                    
-                    <p style="margin-top: 20px; color: #718096; font-size: 0.9rem;">
-                        Available for iOS, Android, and Desktop
-                    </p>
+            <h1>Download ${app.name}</h1>
+            <p class="subtitle">This app is completely free!</p>
+            
+            <div style="text-align: center; padding: 40px 0;">
+                <div style= "width: 70px; height: 70px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin: auto; background: linear-gradient(135deg, #4a90e2 0%, #2ecc71 100%); box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);">
+                <div style="font-size: 4rem;">${app.icon}</div>
                 </div>
-            `;
+                <h2 style="color: #1a202c; margin-bottom: 15px;">${app.name}</h2>
+                <p style="color: #718096; margin-bottom: 30px;">No payment required. Start using it right away!</p>
+                
+                <button type="button" class="submit-button" onclick="window.location.href='/download.html?app=${app.name.toLowerCase()}'">
+                    Download Now
+                </button>
+                
+                <p style="margin-top: 20px; color: #718096; font-size: 0.9rem;">
+                    Available for iOS, Android, and Desktop
+                </p>
+            </div>
+        `;
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', updatePaymentPage);
+        document.addEventListener('DOMContentLoaded', function () {
+            updatePaymentPage();
 
-        // Payment method selection
-        const paymentMethods = document.querySelectorAll('.payment-method');
-        const cardForm = document.getElementById('cardForm');
+            // Payment method selection
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            const cardForm = document.getElementById('cardForm');
 
-        paymentMethods.forEach(method => {
-            method.addEventListener('click', () => {
-                paymentMethods.forEach(m => m.classList.remove('active'));
-                method.classList.add('active');
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', () => {
+                    paymentMethods.forEach(m => m.classList.remove('active'));
+                    method.classList.add('active');
 
-                const selectedMethod = method.dataset.method;
-                if (selectedMethod === 'card') {
-                    cardForm.style.display = 'block';
-                } else {
-                    cardForm.style.display = 'none';
-                }
+                    const selectedMethod = method.dataset.method;
+                    if (selectedMethod === 'card') {
+                        cardForm.style.display = 'block';
+                    } else {
+                        cardForm.style.display = 'none';
+                    }
+                });
             });
-        });
 
-
-        // Form submission
-        const paymentForm = document.getElementById("paymentForm");
-        paymentForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-
-            alert(
-                "Payment processing... This is a demo. Integrate with your payment provider."
-            );
-
+            // Form submission
+            const paymentForm = document.getElementById("paymentForm");
+            if (paymentForm) {
+                paymentForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    alert("Payment processing... This is a demo. Integrate with your payment provider.");
+                });
+            }
         });
     </script>
 </body>

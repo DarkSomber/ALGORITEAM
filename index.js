@@ -3,57 +3,249 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener("click", function (e) {
     e.preventDefault();
     const target = document.querySelector(this.getAttribute("href"));
-    target.scrollIntoView({
-      behavior: "smooth",
-    });
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
   });
 });
 
-// Default configuration for the app carousel section
+// Simple Demo Login System
+
+// Global login state management for all pages
+function initializeAllPages() {
+    updateNavigation();
+    
+    // Setup login functionality if elements exist
+    setupLoginForms();
+}
+
+function setupLoginForms() {
+    // Login form handler
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername')?.value || 'Demo User';
+            loginUser(username);
+        });
+    }
+    
+    // Register form handler
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername')?.value || 'Demo User';
+            const email = document.getElementById('registerEmail')?.value || 'demo@algoriteam.com';
+            
+            users[username] = { email: email, password: 'demo' };
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            const registerSuccess = document.getElementById('registerSuccess');
+            if (registerSuccess) {
+                registerSuccess.style.display = 'block';
+            }
+            
+            setTimeout(() => {
+                loginUser(username);
+            }, 1000);
+        });
+    }
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', initializeAllPages);
+
+let users = JSON.parse(localStorage.getItem('users')) || {};
+let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+// Initialize login system when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeLoginSystem();
+});
+
+function initializeLoginSystem() {
+    // Update navigation based on login status
+    updateNavigation();
+    
+    // Setup login form if it exists on this page
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Demo login - accept any credentials
+            if (username && password) {
+                loginUser(username);
+            }
+        });
+    }
+    
+    // Setup register form if it exists on this page
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            
+            // Demo registration - always succeed
+            if (username && email) {
+                users[username] = { email: email, password: 'demo' };
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                const registerSuccess = document.getElementById('registerSuccess');
+                if (registerSuccess) {
+                    registerSuccess.style.display = 'block';
+                }
+                
+                // Auto login after registration
+                setTimeout(() => {
+                    loginUser(username);
+                }, 1000);
+            }
+        });
+    }
+    
+    // Check if we should show content section (for login page)
+    if (currentUser && document.getElementById('contentSection')) {
+        showContentSection();
+    }
+}
+
+function loginUser(username) {
+    currentUser = { username: username, email: users[username]?.email || `${username}@demo.com` };
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    
+    // Update navigation
+    updateNavigation();
+    
+    // If on login page, show content section
+    if (document.getElementById('contentSection')) {
+        showContentSection();
+    }
+    
+    // Redirect to home page if on login page
+    if (window.location.pathname.includes('login.html')) {
+        setTimeout(() => {
+            window.location.href = '/index.html';
+        }, 500);
+    }
+}
+
+function loginWithGoogle() {
+    // Demo Google login
+    const username = 'Google User';
+    const email = 'googleuser@demo.com';
+    
+    users[username] = { email: email, password: 'google' };
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    loginUser(username);
+}
+
+function logout() {
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+    updateNavigation();
+    
+    // If on login page, show login form
+    if (document.getElementById('loginPage')) {
+        showLoginPage();
+    }
+    
+    // Redirect to home if on login page
+    if (window.location.pathname.includes('login.html')) {
+        window.location.href = '/index.html';
+    }
+}
+
+function updateNavigation() {
+    const userGreeting = document.getElementById('userGreeting');
+    const loginLink = document.getElementById('loginLink');
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    
+    if (userGreeting && loginLink && usernameDisplay) {
+        if (currentUser) {
+            userGreeting.style.display = 'flex';
+            loginLink.style.display = 'none';
+            usernameDisplay.textContent = currentUser.username;
+        } else {
+            userGreeting.style.display = 'none';
+            loginLink.style.display = 'block';
+        }
+    }
+}
+
+function showContentSection() {
+    const loginPage = document.getElementById('loginPage');
+    const registerPage = document.getElementById('registerPage');
+    const contentSection = document.getElementById('contentSection');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    
+    if (loginPage) loginPage.classList.remove('active');
+    if (registerPage) registerPage.classList.remove('active');
+    if (contentSection) contentSection.style.display = 'block';
+    if (welcomeMessage && currentUser) {
+        welcomeMessage.textContent = `Welcome, ${currentUser.username}!`;
+    }
+}
+
+function showLoginPage() {
+    const loginPage = document.getElementById('loginPage');
+    const registerPage = document.getElementById('registerPage');
+    const contentSection = document.getElementById('contentSection');
+    
+    if (loginPage) loginPage.classList.add('active');
+    if (registerPage) registerPage.classList.remove('active');
+    if (contentSection) contentSection.style.display = 'none';
+}
+
+function showRegisterPage() {
+    const loginPage = document.getElementById('loginPage');
+    const registerPage = document.getElementById('registerPage');
+    const contentSection = document.getElementById('contentSection');
+    
+    if (registerPage) registerPage.classList.add('active');
+    if (loginPage) loginPage.classList.remove('active');
+    if (contentSection) contentSection.style.display = 'none';
+}
+
+// Carousel functionality (keep your existing carousel code)
 const defaultConfig = {
-  section_title: "Out Apps",
+  section_title: "Our Apps",
   app_1_title: "Habitory",
   app_1_tagline: "Where good habits are built.",
-  app_1_description:
-    "Habitory is your personal space for growth — track your daily routines, set achievable goals, and watch your progress rise. With smart reminders and streak tracking, Habitory makes self-improvement feel rewarding and natural.",
+  app_1_description: "Habitory is your personal space for growth — track your daily routines, set achievable goals, and watch your progress rise. With smart reminders and streak tracking, Habitory makes self-improvement feel rewarding and natural.",
   app_2_title: "TimeForge",
   app_2_tagline: "Shape your time. Master your habits.",
-  app_2_description:
-    "TimeForge helps you turn minutes into milestones. Combine to-do lists, timers, and habit tracking in one sleek app that keeps you consistent and motivated. Forge stronger habits, one focused session at a time.",
+  app_2_description: "TimeForge helps you turn minutes into milestones. Combine to-do lists, timers, and habit tracking in one sleek app that keeps you consistent and motivated. Forge stronger habits, one focused session at a time.",
   app_3_title: "RiseLoop",
   app_3_tagline: "Rise. Repeat. Improve.",
-  app_3_description:
-    "RiseLoop keeps you in rhythm with your goals through daily reminders, progress circles, and motivation boosts. Whether it's reading, exercising, or meditating — build habits that stick and rise higher every day.",
+  app_3_description: "RiseLoop keeps you in rhythm with your goals through daily reminders, progress circles, and motivation boosts. Whether it's reading, exercising, or meditating — build habits that stick and rise higher every day.",
   app_4_title: "DailyRoot",
   app_4_tagline: "Master Your Digital Habits",
-  app_4_description:
-    "DailyRoot automatically tracks your screen time and application usage, transforming your digital behavior into actionable insights. Set focus timers, visualize your habits, and take control of your productivity.",
+  app_4_description: "DailyRoot automatically tracks your screen time and application usage, transforming your digital behavior into actionable insights. Set focus timers, visualize your habits, and take control of your productivity.",
   background_color: "#667eea",
   card_background: "#ffffff",
   text_color: "#1a202c",
   accent_color: "#667eea",
   button_color: "#ffffff",
-  font_family:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif",
+  font_family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif",
   font_size: 16,
 };
 
-// Track which card is currently displayed
 let currentIndex = 0;
-
-// Get all DOM elements needed for the carousel
 const cards = document.querySelectorAll(".card");
 const dots = document.querySelectorAll(".dot");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
-/**
- * Display a specific card and update navigation dots
- * @param {number} index - The index of the card to show (0-2)
- */
-
 function showCard(index) {
-  // Remove active class from all cards and add it to the selected one
   cards.forEach((card, i) => {
     card.classList.remove("active", "exiting");
     if (i === index) {
@@ -61,46 +253,37 @@ function showCard(index) {
     }
   });
 
-  // Update active dot indicator
   dots.forEach((dot, i) => {
     dot.classList.toggle("active", i === index);
   });
 
-  // Update the current index tracker
   currentIndex = index;
 }
 
-// Previous button: go to the previous card (wraps around to last card)
-prevBtn.addEventListener("click", () => {
-  const newIndex = (currentIndex - 1 + cards.length) % cards.length;
-  showCard(newIndex);
-});
-
-// Next button: go to the next card (wraps around to first card)
-nextBtn.addEventListener("click", () => {
-  const newIndex = (currentIndex + 1) % cards.length;
-  showCard(newIndex);
-});
-
-// Dot navigation: click any dot to jump to that card
-dots.forEach((dot) => {
-  dot.addEventListener("click", () => {
-    const index = parseInt(dot.dataset.index);
-    showCard(index);
+if (prevBtn && nextBtn) {
+  prevBtn.addEventListener("click", () => {
+    const newIndex = (currentIndex - 1 + cards.length) % cards.length;
+    showCard(newIndex);
   });
-});
 
-// Auto-rotate carousel: advance to next card every 5 seconds
-setInterval(() => {
-  const newIndex = (currentIndex + 1) % cards.length;
-  showCard(newIndex);
-}, 5000);
+  nextBtn.addEventListener("click", () => {
+    const newIndex = (currentIndex + 1) % cards.length;
+    showCard(newIndex);
+  });
 
-/**
- * Apply configuration changes to update the page styling and content
- * This function is called when the Element SDK config changes
- * @param {Object} config - Configuration object with styling and content options
- */
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const index = parseInt(dot.dataset.index);
+      showCard(index);
+    });
+  });
+
+  setInterval(() => {
+    const newIndex = (currentIndex + 1) % cards.length;
+    showCard(newIndex);
+  }, 5000);
+}
+
 async function onConfigChange(config) {
   // Set up font family with fallback
   const customFont = config.font_family || defaultConfig.font_family;

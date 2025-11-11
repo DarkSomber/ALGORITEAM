@@ -90,6 +90,226 @@ nav.navbar {
   color: var(--primary-blue);
 }
 
+.login-link button {
+  margin-top: 8px;
+  padding: 10px 20px;
+  background: var(--secondary-green);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-link button:hover {
+  background: var(--primary-blue);
+}
+
+/* Login */
+
+.auth-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-section button {
+    padding: 10px 20px;
+    background: var(--secondary-green);
+    color: var(--white);
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#userGreeting {
+    display: flex;
+    align-items: center;
+    color: var(--text-medium);
+    font-weight: 500;
+}
+
+.auth-container {
+  margin: 100px auto;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  opacity: 1;
+}
+
+.auth-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e1e1e1;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.auth-container button:hover {
+  background: var(--secondary-green);
+  transform: translateY(-2px);
+}
+
+.auth-container button:active {
+  transform: translateY(0);
+}
+
+.google-btn {
+  background: white;
+  color: #333;
+  border: 2px solid #e1e1e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.google-btn:hover {
+  background: var(--secondary-green);
+}
+
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: #e1e1e1;
+}
+
+.divider span {
+  background: white;
+  padding: 0 10px;
+  position: relative;
+  color: #999;
+  font-size: 14px;
+}
+
+.error-message,
+.success-message {
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+  display: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: #e74c3c;
+  background: #fadbd8;
+}
+
+.success-message {
+  color: #27ae60;
+  background: #d5f4e6;
+}
+
+.switch-form {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.switch-form a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.switch-form a:hover {
+  text-decoration: underline;
+}
+
+.content-section {
+  display: none;
+  text-align: center;
+}
+
+.content-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.content-section p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.logout-btn {
+  margin-top: 20px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+}
+
 /* Hero Section */
 .hero-section {
   padding: 80px 20px 60px;
@@ -307,8 +527,13 @@ h1 {
 }
 
 .btn-primary {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px;
   background: var(--white);
   color: var(--primary-blue);
+  border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -1125,8 +1350,8 @@ h1 {
   width: 60px;
   height: 60px;
   background: linear-gradient(135deg,
-    var(--primary-blue) 0%,
-    var(--secondary-green) 100%);
+      var(--primary-blue) 0%,
+      var(--secondary-green) 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
