@@ -11,66 +11,202 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
   });
 });
 
-// Simple Demo Login System
-
-// Global login state management for all pages
-function initializeAllPages() {
-    updateNavigation();
-    
-    // Setup login functionality if elements exist
-    setupLoginForms();
-}
-
-function setupLoginForms() {
-    // Login form handler
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername')?.value || 'Demo User';
-            loginUser(username);
-        });
-    }
-    
-    // Register form handler
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('registerUsername')?.value || 'Demo User';
-            const email = document.getElementById('registerEmail')?.value || 'demo@algoriteam.com';
-            
-            users[username] = { email: email, password: 'demo' };
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            const registerSuccess = document.getElementById('registerSuccess');
-            if (registerSuccess) {
-                registerSuccess.style.display = 'block';
-            }
-            
-            setTimeout(() => {
-                loginUser(username);
-            }, 1000);
-        });
-    }
-}
-
-// Initialize when page loads
-document.addEventListener('DOMContentLoaded', initializeAllPages);
-
+// Initialize users and currentUser from localStorage
 let users = JSON.parse(localStorage.getItem('users')) || {};
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
-// Initialize login system when page loads
+// Initialize everything when page loads
 document.addEventListener('DOMContentLoaded', function() {
+    initializeHamburgerMenu();
     initializeLoginSystem();
 });
 
+// Hamburger Menu Functionality
+function initializeHamburgerMenu() {
+    const navbar = document.querySelector('nav.navbar');
+    if (!navbar) return;
+    
+    // Create hamburger button if it doesn't exist
+    let hamburger = document.querySelector('.hamburger');
+    if (!hamburger) {
+        hamburger = document.createElement('button');
+        hamburger.className = 'hamburger';
+        hamburger.setAttribute('aria-label', 'Toggle menu');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.innerHTML = `
+            <span></span>
+            <span></span>
+            <span></span>
+        `;
+        
+        const logoHolder = document.querySelector('.Logo-Holder');
+        if (logoHolder) {
+            logoHolder.insertAdjacentElement('afterend', hamburger);
+        }
+    }
+    
+    // Create overlay if it doesn't exist
+    let overlay = document.querySelector('.mobile-menu-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'mobile-menu-overlay';
+        document.body.appendChild(overlay);
+    }
+    
+    const navLinks = document.querySelector('.nav-links');
+    const authSection = document.querySelector('nav.navbar > .auth-section');
+    
+    // Clone auth section into mobile menu - ONLY CREATE WHAT'S NEEDED
+    function setupMobileAuth() {
+        if (!navLinks || !authSection) return;
+        
+        if (window.innerWidth <= 768) {
+            // Remove any existing auth section in nav-links
+            const existingAuth = navLinks.querySelector('.auth-section');
+            if (existingAuth) {
+                existingAuth.remove();
+            }
+            
+            // Create a new auth section instead of cloning
+            const authClone = document.createElement('div');
+            authClone.className = 'auth-section';
+            authClone.style.display = 'flex';
+            authClone.style.flexDirection = 'column';
+            authClone.style.gap = '15px';
+            authClone.style.marginTop = '1rem';
+            authClone.style.paddingTop = '1rem';
+            authClone.style.borderTop = '2px solid var(--light-gray)';
+            authClone.style.width = '100%';
+            
+            // Get the current login state
+            const isLoggedIn = currentUser !== null;
+            
+            if (isLoggedIn) {
+                // Create and show user greeting only
+                const userGreeting = document.createElement('div');
+                userGreeting.id = 'userGreeting';
+                userGreeting.style.display = 'flex';
+                userGreeting.style.flexDirection = 'column';
+                userGreeting.style.gap = '10px';
+                userGreeting.style.textAlign = 'center';
+                userGreeting.style.width = '100%';
+                userGreeting.innerHTML = `
+                    <span>Welcome, <span id="usernameDisplay">${currentUser.username}</span>!</span>
+                    <button style="width: 100%; margin-left: 0; padding: 10px 20px; background: #ff4757; color: white; border: none; border-radius: 30px; font-size: 1.2rem; font-weight: 600; cursor: pointer;">Logout</button>
+                `;
+                
+                // Add logout event
+                const logoutBtn = userGreeting.querySelector('button');
+                logoutBtn.onclick = function(e) {
+                    e.preventDefault();
+                    logout();
+                    closeMenu();
+                };
+                
+                authClone.appendChild(userGreeting);
+            } else {
+                // Create and show login link only
+                const loginLink = document.createElement('a');
+                loginLink.href = '/login.html';
+                loginLink.className = 'login-link';
+                loginLink.id = 'loginLink';
+                loginLink.style.display = 'block';
+                loginLink.style.width = '100%';
+                
+                const loginButton = document.createElement('button');
+                loginButton.textContent = 'Login / Register';
+                loginButton.style.width = '100%';
+                loginButton.style.padding = '10px 20px';
+                loginButton.style.background = 'var(--secondary-green)';
+                loginButton.style.color = 'var(--white)';
+                loginButton.style.border = 'none';
+                loginButton.style.borderRadius = '30px';
+                loginButton.style.fontSize = '1.2rem';
+                loginButton.style.fontWeight = '600';
+                loginButton.style.cursor = 'pointer';
+                
+                loginLink.appendChild(loginButton);
+                authClone.appendChild(loginLink);
+            }
+            
+            navLinks.appendChild(authClone);
+        }
+    }
+    
+    // Initial setup - call immediately and after a short delay to ensure DOM is ready
+    setupMobileAuth();
+    setTimeout(setupMobileAuth, 100);
+    
+    // Toggle menu function
+    function toggleMenu() {
+        const isActive = hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        // Refresh mobile auth when opening menu to ensure correct state
+        if (isActive) {
+            setupMobileAuth();
+        }
+        
+        hamburger.setAttribute('aria-expanded', isActive);
+        
+        if (isActive) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+    
+    // Close menu function
+    function closeMenu() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        overlay.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+    
+    // Make closeMenu and setupMobileAuth available globally
+    window.closeMobileMenu = closeMenu;
+    window.refreshMobileAuth = setupMobileAuth;
+    
+    // Event listeners
+    hamburger.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', closeMenu);
+    
+    navLinks.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A' && e.target.closest('li')) {
+            closeMenu();
+        }
+    });
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (window.innerWidth > 768) {
+                closeMenu();
+            } else {
+                setupMobileAuth();
+            }
+        }, 250);
+    });
+    
+    // ESC key to close menu
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && hamburger.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+}
+
+// Login System
 function initializeLoginSystem() {
     // Update navigation based on login status
     updateNavigation();
     
-    // Setup login form if it exists on this page
+    // Setup login form
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
@@ -78,14 +214,13 @@ function initializeLoginSystem() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
-            // Demo login - accept any credentials
             if (username && password) {
                 loginUser(username);
             }
         });
     }
     
-    // Setup register form if it exists on this page
+    // Setup register form
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', function(e) {
@@ -93,7 +228,6 @@ function initializeLoginSystem() {
             const username = document.getElementById('registerUsername').value;
             const email = document.getElementById('registerEmail').value;
             
-            // Demo registration - always succeed
             if (username && email) {
                 users[username] = { email: email, password: 'demo' };
                 localStorage.setItem('users', JSON.stringify(users));
@@ -103,7 +237,6 @@ function initializeLoginSystem() {
                     registerSuccess.style.display = 'block';
                 }
                 
-                // Auto login after registration
                 setTimeout(() => {
                     loginUser(username);
                 }, 1000);
@@ -138,7 +271,6 @@ function loginUser(username) {
 }
 
 function loginWithGoogle() {
-    // Demo Google login
     const username = 'Google User';
     const email = 'googleuser@demo.com';
     
@@ -158,7 +290,7 @@ function logout() {
         showLoginPage();
     }
     
-    // Redirect to home if on login page
+    // Redirect to home if not already there
     if (window.location.pathname.includes('login.html')) {
         window.location.href = '/index.html';
     }
@@ -169,15 +301,25 @@ function updateNavigation() {
     const loginLink = document.getElementById('loginLink');
     const usernameDisplay = document.getElementById('usernameDisplay');
     
-    if (userGreeting && loginLink && usernameDisplay) {
+    // Update desktop navigation
+    if (userGreeting && loginLink) {
         if (currentUser) {
+            // User is logged in
             userGreeting.style.display = 'flex';
             loginLink.style.display = 'none';
-            usernameDisplay.textContent = currentUser.username;
+            if (usernameDisplay) {
+                usernameDisplay.textContent = currentUser.username;
+            }
         } else {
+            // User is logged out
             userGreeting.style.display = 'none';
             loginLink.style.display = 'block';
         }
+    }
+    
+    // Update mobile menu if on mobile screen
+    if (window.innerWidth <= 768 && window.refreshMobileAuth) {
+        window.refreshMobileAuth();
     }
 }
 
@@ -215,18 +357,18 @@ function showRegisterPage() {
     if (contentSection) contentSection.style.display = 'none';
 }
 
-// Carousel functionality (keep your existing carousel code)
+// Carousel functionality
 const defaultConfig = {
   section_title: "Our Apps",
   app_1_title: "Habitory",
   app_1_tagline: "Where good habits are built.",
-  app_1_description: "Habitory is your personal space for growth — track your daily routines, set achievable goals, and watch your progress rise. With smart reminders and streak tracking, Habitory makes self-improvement feel rewarding and natural.",
+  app_1_description: "Habitory is your personal space for growth – track your daily routines, set achievable goals, and watch your progress rise. With smart reminders and streak tracking, Habitory makes self-improvement feel rewarding and natural.",
   app_2_title: "TimeForge",
   app_2_tagline: "Shape your time. Master your habits.",
   app_2_description: "TimeForge helps you turn minutes into milestones. Combine to-do lists, timers, and habit tracking in one sleek app that keeps you consistent and motivated. Forge stronger habits, one focused session at a time.",
   app_3_title: "RiseLoop",
   app_3_tagline: "Rise. Repeat. Improve.",
-  app_3_description: "RiseLoop keeps you in rhythm with your goals through daily reminders, progress circles, and motivation boosts. Whether it's reading, exercising, or meditating — build habits that stick and rise higher every day.",
+  app_3_description: "RiseLoop keeps you in rhythm with your goals through daily reminders, progress circles, and motivation boosts. Whether it's reading, exercising, or meditating – build habits that stick and rise higher every day.",
   app_4_title: "DailyRoot",
   app_4_tagline: "Master Your Digital Habits",
   app_4_description: "DailyRoot automatically tracks your screen time and application usage, transforming your digital behavior into actionable insights. Set focus timers, visualize your habits, and take control of your productivity.",
@@ -285,34 +427,29 @@ if (prevBtn && nextBtn) {
 }
 
 async function onConfigChange(config) {
-  // Set up font family with fallback
   const customFont = config.font_family || defaultConfig.font_family;
   const baseFontStack =
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif';
   const fontFamily = `${customFont}, ${baseFontStack}`;
   const baseSize = config.font_size || defaultConfig.font_size;
 
-  // Apply global styles
   document.body.style.fontFamily = fontFamily;
   document.body.style.background = `linear-gradient(135deg, ${
     config.background_color || defaultConfig.background_color
   } 0%, ${config.accent_color || defaultConfig.accent_color} 100%)`;
 
-  // Update section title
   const sectionTitle = document.getElementById("sectionTitle");
-  sectionTitle.textContent =
-    config.section_title || defaultConfig.section_title;
-  sectionTitle.style.fontSize = `${baseSize * 2.5}px`;
-  sectionTitle.style.fontFamily = fontFamily;
-  sectionTitle.style.color = config.button_color || defaultConfig.button_color;
+  if (sectionTitle) {
+    sectionTitle.textContent = config.section_title || defaultConfig.section_title;
+    sectionTitle.style.fontSize = `${baseSize * 2.5}px`;
+    sectionTitle.style.fontFamily = fontFamily;
+    sectionTitle.style.color = config.button_color || defaultConfig.button_color;
+  }
 
-  // Update card backgrounds
   cards.forEach((card) => {
-    card.style.background =
-      config.card_background || defaultConfig.card_background;
+    card.style.background = config.card_background || defaultConfig.card_background;
   });
 
-  // Update app titles
   const appTitles = document.querySelectorAll(".app-title");
   const titleConfigs = [
     config.app_1_title || defaultConfig.app_1_title,
@@ -326,7 +463,6 @@ async function onConfigChange(config) {
     title.style.color = config.text_color || defaultConfig.text_color;
   });
 
-  // Update app taglines
   const appTaglines = document.querySelectorAll(".app-tagline");
   const taglineConfigs = [
     config.app_1_tagline || defaultConfig.app_1_tagline,
@@ -340,13 +476,12 @@ async function onConfigChange(config) {
     tagline.style.color = config.accent_color || defaultConfig.accent_color;
   });
 
-  // Update app descriptions
   const appDescriptions = document.querySelectorAll(".app-description");
   const descConfigs = [
     config.app_1_description || defaultConfig.app_1_description,
     config.app_2_description || defaultConfig.app_2_description,
     config.app_3_description || defaultConfig.app_3_description,
-    config.app_3_description || defaultConfig.app_3_description,
+    config.app_4_description || defaultConfig.app_4_description,
   ];
   appDescriptions.forEach((desc, i) => {
     desc.textContent = descConfigs[i];
@@ -355,14 +490,12 @@ async function onConfigChange(config) {
     desc.style.color = config.text_color || defaultConfig.text_color;
   });
 
-  // Update navigation buttons
   const navButtons = document.querySelectorAll(".nav-button");
   navButtons.forEach((btn) => {
     btn.style.background = config.button_color || defaultConfig.button_color;
     btn.style.color = config.accent_color || defaultConfig.accent_color;
   });
 
-  // Update app icon gradients
   const appIcons = document.querySelectorAll(".app-icon");
   appIcons.forEach((icon) => {
     icon.style.background = `linear-gradient(135deg, ${
@@ -370,10 +503,8 @@ async function onConfigChange(config) {
     } 0%, ${config.accent_color || defaultConfig.accent_color} 100%)`;
   });
 
-  // Update active dot color
   const activeDot = document.querySelector(".dot.active");
   if (activeDot) {
-    activeDot.style.background =
-      config.button_color || defaultConfig.button_color;
+    activeDot.style.background = config.button_color || defaultConfig.button_color;
   }
 }

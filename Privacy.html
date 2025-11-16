@@ -17,23 +17,36 @@
                 Algoriteam
             </a>
         </div>
+
+        <!-- Hamburger Menu Button (will be created by JavaScript) -->
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
         <ul class="nav-links">
             <li><a href="/index.html#apps">Apps</a></li>
             <li><a href="/index.html#price-list">Price-Lists</a></li>
             <li><a href="/about.html#about">About</a></li>
             <li><a href="/about.html#contact-us">Contact</a></li>
         </ul>
+
         <div class="auth-section">
             <div id="userGreeting" style="display: none;">
                 <span>Welcome, <span id="usernameDisplay"></span>!</span>
                 <button onclick="logout()"
-                    style="margin-left: 10px; padding: 8px 16px; background: #ff4757; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+                    style="margin-left: 10px; padding: 8px 16px; background: #ff4757; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    Logout
+                </button>
             </div>
             <a href="/login.html" class="login-link" id="loginLink">
                 <button>Login / Register</button>
             </a>
         </div>
     </nav>
+    <!--Sandwhich Bar-->
+    <div class="mobile-menu-overlay"></div>
 
     <div class="legal-container">
         <div class="legal-header">

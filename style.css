@@ -1635,3 +1635,795 @@ h1 {
 .contact-section:hover {
   transform: translateY(-8px) scale(1.05);
 }
+
+/* Responsiveness */
+
+/* Hamburger Menu Button - Hidden by default */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 5px;
+  z-index: 1001;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-dark);
+  margin: 3px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Hamburger Animation when open */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Tablet and Small Desktop (1024px and below) */
+@media (max-width: 1024px) {
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Navbar */
+  nav.navbar {
+    padding: 1rem 3%;
+    height: auto;
+    min-height: 5rem;
+  }
+
+  .nav-links {
+    gap: 10px;
+  }
+
+  .nav-links li {
+    padding: 0 10px;
+  }
+
+  .nav-links li a {
+    font-size: 1.3rem;
+  }
+
+  /* Hero Section */
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .Right-Options h1 {
+    font-size: 2.8rem;
+  }
+
+  .Right-Options p {
+    font-size: 1.1rem;
+  }
+
+  .Left-img {
+    order: 1;
+  }
+
+  .Right-Options {
+    order: 2;
+  }
+
+  .Left-img img {
+    max-width: 400px;
+  }
+
+  .trust-indicators,
+  .value-props-compact {
+    justify-content: center;
+  }
+
+  /* Featured Section */
+  .hero-content-featured {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    padding: 50px 4%;
+  }
+
+  .text-content h1 {
+    font-size: 42px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  /* Pricing Grid */
+  .pricing-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 700px;
+  }
+
+  /* Payment Grid */
+  .payment-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .order-summary {
+    position: static;
+    top: auto;
+  }
+
+  /* Footer */
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Tablet Portrait (768px and below) */
+@media (max-width: 768px) {
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Navbar - Mobile Menu */
+  nav.navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2%;
+    height: 5rem;
+  }
+
+  /* Show hamburger menu */
+  .hamburger {
+    display: flex;
+    order: 3;
+  }
+
+  /* Keep desktop auth section visible but positioned off-screen */
+  nav.navbar > .auth-section {
+    position: absolute;
+    left: -9999px;
+    visibility: hidden;
+  }
+
+  /* Hide default nav links */
+  .nav-links {
+    position: fixed;
+    top: 5rem;
+    right: -100%;
+    width: 70%;
+    max-width: 300px;
+    height: calc(100vh - 5rem);
+    background: white;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  .nav-links li {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .nav-links li a {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--light-gray);
+  }
+
+  /* Auth section in mobile menu */
+  .nav-links .auth-section {
+    display: flex !important;
+    position: static !important;
+    left: auto !important;
+    visibility: visible !important;
+    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--light-gray);
+  }
+
+  .nav-links .auth-section button {
+    width: 100%;
+  }
+
+  .nav-links #userGreeting {
+    width: 100%;
+    display: flex !important;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .nav-links #userGreeting button {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .nav-links .login-link {
+    width: 100%;
+    display: block !important;
+  }
+
+  .nav-links .login-link button {
+    width: 100%;
+  }
+
+  .Logo-Holder {
+    font-size: 1.5rem;
+    order: 1;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 60px 15px 40px;
+    min-height: auto;
+  }
+
+  .Right-Options h1 {
+    font-size: 2.2rem;
+  }
+
+  .Right-Options p {
+    font-size: 1rem;
+  }
+
+  .Left-img img {
+    max-width: 300px;
+    height: auto;
+  }
+
+  .trust-indicators {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .value-props-compact {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Featured Section */
+  .hero-container {
+    padding: 20px 15px;
+  }
+
+  .hero-content-featured {
+    padding: 40px 4%;
+    border-radius: 16px;
+  }
+
+  .text-content h1 {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .floating-badge {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  /* Apps Carousel */
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .carousel-container {
+    height: 500px;
+  }
+
+  .card {
+    padding: 2rem 1.5rem;
+  }
+
+  .app-title {
+    font-size: 1.7rem;
+  }
+
+  .app-tagline {
+    font-size: 1rem;
+  }
+
+  .app-description {
+    font-size: 0.95rem;
+  }
+
+  /* Pricing Section */
+  .section-header h1 {
+    font-size: 36px;
+  }
+
+  .section-header p {
+    font-size: 18px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+
+  .pricing-card {
+    padding: 35px 25px;
+  }
+
+  .app-name {
+    font-size: 28px;
+  }
+
+  .app-price {
+    font-size: 36px;
+  }
+
+  /* About Page */
+  .hero-section-about {
+    min-height: auto;
+    padding: 80px 20px 60px;
+  }
+
+  .hero-content-about {
+    flex-direction: column;
+  }
+
+  .Left-img-about {
+    position: relative;
+    margin-bottom: 30px;
+  }
+
+  .Left-img-about img {
+    max-width: 300px;
+  }
+
+  .text-overlay {
+    position: static;
+    margin-bottom: 20px;
+  }
+
+  .text-overlay h1 {
+    font-size: 5rem;
+  }
+
+  .about-subtitle {
+    position: static;
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+  }
+
+  .about-subtitle h2 {
+    font-size: 2.5rem;
+  }
+
+  .about-subtitle p {
+    font-size: 1.1rem;
+  }
+
+  .mission-section h2,
+  .team-section h2,
+  .contact-section h2 {
+    font-size: 2.5rem;
+  }
+
+  .mission-section p,
+  .team-section p,
+  .contact-section p {
+    font-size: 1.2rem;
+  }
+
+  /* Fix Team Section Image */
+  .team-section img {
+    max-width: 100%;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .team-section {
+    overflow: hidden;
+  }
+
+  /* Payment Page */
+  .payment-container {
+    padding: 80px 15px 40px;
+  }
+
+  .payment-form-section {
+    padding: 30px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-methods {
+    flex-direction: column;
+  }
+
+  /* Footer */
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 2.5rem;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  /* Legal Pages */
+  .legal-container {
+    padding: 80px 20px 40px;
+  }
+
+  .legal-header h1 {
+    font-size: 2rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .legal-content h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  /* Navbar */
+  .Logo-Holder {
+    font-size: 1.3rem;
+  }
+
+  .logo img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .nav-links li a {
+    font-size: 1rem;
+  }
+
+  .auth-section button {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+
+  /* Hero Section */
+  .Right-Options h1 {
+    font-size: 1.8rem;
+  }
+
+  .Right-Options p {
+    font-size: 0.95rem;
+  }
+
+  .Left-img img {
+    max-width: 250px;
+  }
+
+  .stat-number {
+    font-size: 1.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .value-props-compact span {
+    font-size: 0.85rem;
+  }
+
+  .cta button {
+    padding: 14px 30px;
+    font-size: 1rem;
+  }
+
+  /* Featured Section */
+  .text-content h1 {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .logo-text {
+    font-size: 24px;
+  }
+
+  .app-mockup {
+    padding: 20px;
+  }
+
+  .mockup-title {
+    font-size: 16px;
+  }
+
+  .chart-container {
+    padding: 16px;
+  }
+
+  .chart-bars {
+    height: 150px;
+  }
+
+  .app-item {
+    padding: 12px;
+  }
+
+  .app-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .app-name {
+    font-size: 14px;
+  }
+
+  .app-time {
+    font-size: 14px;
+  }
+
+  .floating-badge {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  .badge-1,
+  .badge-2 {
+    position: static;
+    margin: 10px auto;
+    display: inline-block;
+  }
+
+  /* Carousel */
+  .section-title {
+    font-size: 1.7rem;
+  }
+
+  .carousel-container {
+    height: 550px;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .card .app-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .app-tagline {
+    font-size: 0.95rem;
+  }
+
+  .app-description {
+    font-size: 0.9rem;
+  }
+
+  .nav-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  /* Pricing */
+  .section-header h1 {
+    font-size: 28px;
+  }
+
+  .section-header p {
+    font-size: 16px;
+  }
+
+  .pricing-card {
+    padding: 30px 20px;
+  }
+
+  .pricing-card .app-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 36px;
+  }
+
+  .app-name {
+    font-size: 24px;
+  }
+
+  .app-price {
+    font-size: 32px;
+  }
+
+  /* About Page */
+  .hero-section-about {
+    padding: 60px 15px 40px;
+  }
+
+  .text-overlay h1 {
+    font-size: 3rem;
+  }
+
+  .about-subtitle h2 {
+    font-size: 2rem;
+  }
+
+  .about-subtitle p {
+    font-size: 0.95rem;
+  }
+
+  .mission-section h2,
+  .team-section h2,
+  .contact-section h2 {
+    font-size: 2rem;
+  }
+
+  .mission-section p,
+  .team-section p,
+  .contact-section p {
+    font-size: 1rem;
+  }
+
+  .team-section img {
+    height: 300px;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+
+  /* Auth Container */
+  .auth-container {
+    margin: 60px auto;
+    padding: 30px 20px;
+  }
+
+  .auth-container h1 {
+    font-size: 24px;
+  }
+
+  /* Payment Page */
+  .payment-form-section h1 {
+    font-size: 1.7rem;
+  }
+
+  .form-section h2 {
+    font-size: 1.1rem;
+  }
+
+  .payment-method {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 2rem 0 1rem;
+  }
+
+  .footer-content {
+    padding: 0 1rem;
+  }
+
+  .footer-section h3 {
+    font-size: 1.3rem;
+  }
+
+  .footer-section h4 {
+    font-size: 1rem;
+  }
+
+  /* Cookie Table */
+  .cookie-table {
+    font-size: 0.85rem;
+  }
+
+  .cookie-table th,
+  .cookie-table td {
+    padding: 8px;
+  }
+}
+
+/* Extra Small Mobile (360px and below) */
+@media (max-width: 360px) {
+  .Right-Options h1 {
+    font-size: 1.5rem;
+  }
+
+  .text-overlay h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-subtitle h2 {
+    font-size: 1.7rem;
+  }
+
+  .carousel-container {
+    height: 600px;
+  }
+
+  .nav-links li {
+    padding: 0 5px;
+  }
+
+  .nav-links li a {
+    font-size: 0.9rem;
+  }
+}
